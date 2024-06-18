@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Form</title>
+    <title>GALLERY ADD FORM</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,15 +38,15 @@
 </head>
 <body>
     
-    <div class="container" style="display: none;" id="contactForm">
+    <div class="container"  id="contactForm">
         <h2>Post Form</h2>
-        <form action="https://backend-tev.onrender.com/gal-add" method="post" target="_blank">
+        <form id="form" action="https://backend-tev.onrender.com/gal-add" method="post" target="_blank" enctype="text/plain">
 
             <label for="iframe">Val1/img link:</label><br>
-            <input type="text" id="iframe" name="val1"><br><br>
+            <input type="text" id="iframe" name="val1" required><br><br>
             
             <label for="link">Val2/ Yt link:</label><br>
-            <input type="text" id="link" name="val2"><br><br>
+            <input type="text" id="link" name="val2" required><br><br>
             
             <label for="val3">Val3/ (title)?:</label><br>
             <input type="text" id="val3" name="val3"><br><br>
@@ -54,6 +54,8 @@
             <input type="submit" value="Submit">
         </form>
     </div>
+
+    
 
 </body>
 </html>
