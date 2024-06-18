@@ -1,0 +1,71 @@
+html, body{
+    width: 100%;
+    height: 100%;
+}
+html {
+    background: linear-gradient(
+        -90deg,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(-90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(transparent 3px, #111 3px, #111 78px, transparent 78px),
+      linear-gradient(-90deg, #333 1px, transparent 1px),
+      linear-gradient(
+        -90deg,
+        transparent 3px,
+        #111 3px,
+        #111 78px,
+        transparent 78px
+      ),
+      linear-gradient(#333 1px, transparent 1px),
+      #111;
+    background-size: 4px 4px, 4px 4px, 80px 80px, 80px 80px, 80px 80px, 80px 80px,
+      80px 80px, 80px 80px;
+    margin: 0;
+    background-attachment: fixed;
+    z-index: -3;
+  }
+
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+}
+.message{
+    display: inline-block;
+    margin: 20px;
+    color: aliceblue;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: rgba(73, 158, 130, 0.521);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 768px){
+    .message{
+        width: 100%;
+        max-height: 30%;
+    }
+    
+}
+
+
+.Gallery-heading {
+    font-family: "Maven Pro", sans-serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    margin: auto;
+    text-align: center;
+    justify-content: center;
+    color: rgb(57, 138, 238);
+    border-bottom: #ffc75f 2px solid;
+  }

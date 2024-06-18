@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item List - Neumorphism</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .loader {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-200 flex flex-col items-center justify-center min-h-screen">
+    <header class="text-center mb-8">
+        <h1 class="text-3xl font-semibold text-gray-800">Item List</h1>
+    </header>
+
+    <main class="bg-white rounded-lg shadow-md p-6 w-full max-w-4xl">
+        <section id="loading" class="text-center text-lg text-gray-600 mb-6">Loading...</section>
+
+        <ul id="itemList" class=""></ul>
+    </main>
+
+    <footer class="mt-8 text-center">
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const itemList = document.getElementById('itemList');
+                const loading = document.getElementById('loading');
+                const loader = document.createElement('div');
+                loader.className = 'loader hidden'; // Initially hidden
+
+                loading.appendChild(loader);
+
+                // Function to show loader
+                function showLoader() {
+                    loader.classList.remove('hidden');
+                }
+
+                // Function to hide loader
+                function hideLoader() {
+                    loader.classList.add('hidden');
+                }
+            
+                // Function to fetch items and populate the list
+                function fetchItems() {
+                    fetch('https://back.theeditverse.in/del')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            loading.style.display = 'none';
+                            if (data.length > 0) {
+                                itemList.innerHTML = ''; // Clear previous items
+                                data.forEach(item => {
+                                    const listItem = document.createElement('li');
+                                    
+                                    const itemContent = `
+                                        <div class="bg-white rounded-lg shadow-md p-4 overflow-auto">
+                                            <h3 class="text-xl font-semibold text-gray-800">${item.type}</h3>
+                                            <p class="text-gray-600">${item.val1}</p>
+                                            <p class="text-gray-600">${item.val2}</p>
+                                            <p class="text-gray-600">${item.val3}</p>
+                                            <p class="text-gray-600">${item.val4}</p>
+                                        </div>
+                                        <form id="deleteForm_${item._id}" class="mt-2">
+                                            <input type="hidden" name="itemId" value="${item._id}">
+                                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md delete-btn" type="button">Delete</button>
+                                        </form>
+                                    `;
+                                    
+                                    listItem.innerHTML = itemContent;
+                                    itemList.appendChild(listItem);
+                                    
+                                    // Add event listener to delete button
+                                    const deleteForm = document.getElementById(`deleteForm_${item._id}`);
+                                    const deleteButton = deleteForm.querySelector('.delete-btn');
+                                    deleteButton.addEventListener('click', () => {
+                                        showLoader(); // Show loader when delete button is clicked
+
+                                        fetch('https://back.theeditverse.in/deleteItem', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify({ itemId: item._id })
+                                        })
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Failed to delete item');
+                                            }
+                                            // Optionally update UI after successful deletion
+                                            fetchItems(); // Refresh item list after deletion
+                                        })
+                                        .catch(error => {
+                                            console.error('Error deleting item:', error);
+                                            // Handle error scenario as needed
+                                        })
+                                        .finally(() => {
+                                            hideLoader(); // Hide loader after operation completes
+                                        });
+                                    });
+                                });
+                            } else {
+                                itemList.innerHTML = '<li>No items found</li>';
+                            }
+                        })
+                        .catch(error => {
+                            loading.style.display = 'none';
+                            itemList.innerHTML = `<li>Error fetching data: ${error.message}</li>`;
+                            console.error('Error fetching data:', error);
+                        });
+                }
+                
+                // Initial fetch when DOM content is loaded
+                fetchItems();
+            });
+        </script>
+    </footer>
+</body>
+</html>
